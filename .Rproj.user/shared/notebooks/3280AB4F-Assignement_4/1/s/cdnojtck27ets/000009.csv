@@ -1,0 +1,4 @@
+"0","```r
+#relation between lineup accuracy and presence/absence of the target in the lineup
+mosaic(~ lineupacc + lineuptpta, data = traindata)
+```"

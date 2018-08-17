@@ -1,0 +1,29 @@
+"0","```r
+attach(traindata)
+
+```"
+"1","The following object is masked _by_ .GlobalEnv:
+
+    lineupacc
+
+The following objects are masked from traindata (pos = 3):
+
+    automatic, confidence, exposure, facecomparison, lineupacc, lineuprt, lineuptpta, particip
+
+The following objects are masked from traindata (pos = 4):
+
+    automatic, confidence, exposure, facecomparison, lineupacc, lineuprt, lineuptpta, particip
+
+The following objects are masked from traindata (pos = 8):
+
+    automatic, confidence, exposure, facecomparison, lineupacc, lineuprt, lineuptpta, particip
+"
+"0","```r
+par(mfrow = c(2,2))
+ggplot(traindata, aes(lineupacc, automatic))+
+  geom_boxplot()+
+  geom_jitter(alpha = .3)+
+  facet_wrap(~ lineuptpta)+
+  theme_classic()+
+  labs(title = \"Figure 7. Boxplot on distribution of automatic strategy usage according to identification accuracy regarding to presence of absence of the target in the lineup\", x = \"Accuracy\", y = \"Automatic strategy (likert 5 points)\")
+```"

@@ -1,0 +1,9 @@
+"0","```r
+#remove all missing values from the dataset
+traindata <- na.omit(traindata)
+#First representation of our data to have a global idea
+pairs.panels(traindata, stars = TRUE, main = \"Figure 1.  Bivariate scatter plots, histograms and Pearson correlation between variables\")
+#some descriptive statistics, saved as a new dataset & visualisation of these
+traindata_stats <- describe(traindata)
+traindata_stats
+```"

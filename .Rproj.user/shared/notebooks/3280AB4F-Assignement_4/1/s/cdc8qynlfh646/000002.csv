@@ -1,0 +1,18 @@
+"0","```r
+traindata$lineuptpta <- as.factor(traindata$lineuptpta)
+model1 <- glm(lineupacc ~ lineuptpta + exposure, family = \"binomial\", data = traindata)
+tidy(print(model1))
+
+```"
+"1","
+Call:  glm(formula = lineupacc ~ lineuptpta + exposure, family = \"binomial\", 
+    data = traindata)
+
+Coefficients:
+  (Intercept)    lineuptpta2  exposureshort  
+        2.302         -1.589         -2.644  
+
+Degrees of Freedom: 113 Total (i.e. Null);  111 Residual
+Null Deviance:	    157.7 
+Residual Deviance: 115.2 	AIC: 121.2
+"

@@ -1,0 +1,10 @@
+"0","```r
+x <- predict(model5, 
+             data.frame(confidence = 80), type = \"response\")
+odds <- x/(1-x)  # to get the answer in odds
+print(odds)
+
+```"
+"1","      1 
+1.73411 
+"

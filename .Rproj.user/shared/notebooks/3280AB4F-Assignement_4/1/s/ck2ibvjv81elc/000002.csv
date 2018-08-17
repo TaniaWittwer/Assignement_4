@@ -1,0 +1,61 @@
+"0","```r
+model5 <- glm(lineupacc ~ confidence, family = \"binomial\", data = traindata)
+print(model5)
+```"
+"1","
+Call:  glm(formula = lineupacc ~ confidence, family = \"binomial\", data = traindata)
+
+Coefficients:
+(Intercept)   confidence  
+   -0.90181      0.01815  
+
+Degrees of Freedom: 113 Total (i.e. Null);  112 Residual
+Null Deviance:	    157.7 
+Residual Deviance: 149.1 	AIC: 153.1
+"
+"0","```r
+#get logit, ne fonctionne pas avec >
+predict(model5, 
+        data.frame(confidence = 80))
+```"
+"1","        1 
+0.5504944 
+"
+"0","```r
+#get probability
+predict(chdmodel1, 
+        data.frame(tobacco = 30), type = \"response\")
+```"
+"1","        1 
+0.9596376 
+"
+"0","```r
+#odds ratio partiel (?)
+exp(odds)
+```"
+"1","       1 
+5.663886 
+"
+"0","```r
+predict(chdmodel1, 
+        data.frame(tobacco = 30))# logit
+```"
+"1","       1 
+3.168658 
+"
+"0","```r
+predict(chdmodel1, 
+        data.frame(tobacco = 30), type = \"response\") # probability
+```"
+"1","        1 
+0.9596376 
+"
+"0","```r
+x <- predict(chdmodel1, 
+             data.frame(tobacco = 30), type=\"response\")
+odds <- x/(1-x)  # to get the answer in odds
+print(odds)
+```"
+"1","       1 
+23.77556 
+"

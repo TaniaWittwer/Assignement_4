@@ -1,0 +1,9 @@
+"0","```r
+#load the .csv file (converted from the excel file)
+full_data.dat <- read_csv2(\"Merged_15032016.csv\")
+
+#explore the structure of the file
+str(full_data.dat)
+
+#see join R script as specify on the instruction (Open the file named \"question_1.R\" here -->)
+```"

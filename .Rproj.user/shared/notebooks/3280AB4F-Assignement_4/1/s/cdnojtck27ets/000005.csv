@@ -1,0 +1,19 @@
+"0","```r
+#explore the distribution of numerical/scale variables (confidence, lineuprt, automatic and facecomparison)
+attach(traindata)
+```"
+"1","The following object is masked _by_ .GlobalEnv:
+
+    lineupacc
+
+The following objects are masked from traindata (pos = 3):
+
+    automatic, confidence, exposure, facecomparison, lineupacc, lineuprt, lineuptpta, particip
+
+The following objects are masked from traindata (pos = 7):
+
+    automatic, confidence, exposure, facecomparison, lineupacc, lineuprt, lineuptpta, particip
+"
+"0","```r
+par(mfrow = c(2,2))
+```"

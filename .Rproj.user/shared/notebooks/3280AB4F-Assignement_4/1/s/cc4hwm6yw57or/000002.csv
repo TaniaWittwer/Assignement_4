@@ -1,0 +1,8 @@
+"0","```r
+#create a confusion matrix
+for_matrix <- predict(model5, traindata, type = \"response\")
+table(round(for_matrix),traindata$lineupacc, 0)
+```"
+"1","Error in table(round(for_matrix), traindata$lineupacc, 0) : 
+  all arguments must have the same length
+"

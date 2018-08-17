@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1534501004898.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "465B8CA1",
+    "lastKnownWriteTime" : 1534501015,
+    "last_content_update" : 1534501015514,
+    "path" : "~/Documents/GitHub/Assignement_4/Assignement_4.Rmd",
+    "project_path" : "Assignement_4.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "3,3",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

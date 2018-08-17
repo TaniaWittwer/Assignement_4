@@ -1,0 +1,82 @@
+"0","```r
+summary(model2)
+```"
+"1","
+Call:
+glm(formula = lineupacc ~ lineuptpta + exposure + confidence + 
+    lineuprt + automatic + facecomparison, family = \"binomial\", 
+    data = traindata)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.3401  -0.8570   0.3938   0.7660   2.2214  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)     3.180e+00  1.301e+00   2.444  0.01454 *  
+lineuptpta2    -1.714e+00  5.409e-01  -3.169  0.00153 ** 
+exposureshort  -2.747e+00  5.906e-01  -4.651  3.3e-06 ***
+confidence      4.345e-03  8.389e-03   0.518  0.60451    
+lineuprt       -8.037e-06  1.240e-05  -0.648  0.51677    
+automatic      -5.046e-02  1.845e-01  -0.274  0.78447    
+facecomparison -2.339e-01  1.896e-01  -1.234  0.21737    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 157.72  on 113  degrees of freedom
+Residual deviance: 112.92  on 107  degrees of freedom
+AIC: 126.92
+
+Number of Fisher Scoring iterations: 4
+"
+"0","```r
+NagelkerkeR2(model2)
+```"
+"1","$N
+[1] 114
+
+$R2
+[1] 0.4336983
+"
+"0","```r
+#test the classification success of the model
+testmodel2 <- predict(model2, traindata, type = \"response\")
+table(round(testmodel2 + 0.05), traindata$lineupacc)
+```"
+"1","   
+     0  1
+  0 34 13
+  1 20 47
+"
+"0","```r
+confusionMatrix(as.factor(round(testmodel2 + 0.05)), as.factor(traindata$lineupacc))
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction  0  1
+         0 34 13
+         1 20 47
+                                          
+               Accuracy : 0.7105          
+                 95% CI : (0.6181, 0.7916)
+    No Information Rate : 0.5263          
+    P-Value [Acc > NIR] : 4.598e-05       
+                                          
+                  Kappa : 0.4157          
+ Mcnemar's Test P-Value : 0.2963          
+                                          
+            Sensitivity : 0.6296          
+            Specificity : 0.7833          
+         Pos Pred Value : 0.7234          
+         Neg Pred Value : 0.7015          
+             Prevalence : 0.4737          
+         Detection Rate : 0.2982          
+   Detection Prevalence : 0.4123          
+      Balanced Accuracy : 0.7065          
+                                          
+       'Positive' Class : 0               
+                                          
+"

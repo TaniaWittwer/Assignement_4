@@ -1,0 +1,76 @@
+"0","```r
+summary(model1)
+```"
+"1","
+Call:
+glm(formula = lineupacc ~ lineuptpta + exposure, family = \"binomial\", 
+    data = traindata)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1896  -1.0359   0.4368   0.8934   2.0333  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)     2.3017     0.5093   4.519 6.20e-06 ***
+lineuptpta2    -1.5894     0.5111  -3.110  0.00187 ** 
+exposureshort  -2.6441     0.5133  -5.151 2.58e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 157.72  on 113  degrees of freedom
+Residual deviance: 115.19  on 111  degrees of freedom
+AIC: 121.19
+
+Number of Fisher Scoring iterations: 4
+"
+"0","```r
+NagelkerkeR2(model1)
+```"
+"1","$N
+[1] 114
+
+$R2
+[1] 0.4155432
+"
+"0","```r
+test1 <- predict(model1, traindata, type = \"response\")
+table(round(test1 + 0.05), traindata$lineupacc)
+```"
+"1","   
+     0  1
+  0 42 16
+  1 12 44
+"
+"0","```r
+confusionMatrix(as.factor(round(test1 + 0.05)), as.factor(traindata$lineupacc))
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction  0  1
+         0 42 16
+         1 12 44
+                                          
+               Accuracy : 0.7544          
+                 95% CI : (0.6649, 0.8302)
+    No Information Rate : 0.5263          
+    P-Value [Acc > NIR] : 4.617e-07       
+                                          
+                  Kappa : 0.5092          
+ Mcnemar's Test P-Value : 0.5708          
+                                          
+            Sensitivity : 0.7778          
+            Specificity : 0.7333          
+         Pos Pred Value : 0.7241          
+         Neg Pred Value : 0.7857          
+             Prevalence : 0.4737          
+         Detection Rate : 0.3684          
+   Detection Prevalence : 0.5088          
+      Balanced Accuracy : 0.7556          
+                                          
+       'Positive' Class : 0               
+                                          
+"

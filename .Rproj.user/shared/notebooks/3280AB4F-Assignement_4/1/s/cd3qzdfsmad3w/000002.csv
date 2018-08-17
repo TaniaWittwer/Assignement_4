@@ -1,0 +1,5 @@
+"0","```r
+install.packages(\"pacman\")
+library(pacman)
+p_load(tidyverse, psych, magrittr, readr, DHARMa, broom, stats, caret, vcd, fmsb, lmtest)
+```"

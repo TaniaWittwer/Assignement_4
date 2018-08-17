@@ -1,0 +1,8 @@
+"0","```r
+ggplot(traindata, aes(lineupacc, automatic))+
+  geom_boxplot()+
+  geom_jitter(alpha = .3)+
+  facet_wrap(~ exposure)+
+  theme_classic()+
+  labs(title = \"Figure 9. Boxplot on distribution of automatic strategy usage according to identification accuracy regarding to exposure duration to the event\", x = \"Accuracy\", y = \"Automatic strategy (likert 5 points)\")
+```"

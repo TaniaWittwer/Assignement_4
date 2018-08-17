@@ -1,0 +1,24 @@
+"0","```r
+#Since, we consider a very last model, removing decision latency (lineuprt) which seems have no effect in out models, to see if the model is improved, as well as some interactions like confidence*exposure since our exploratory analysis show no interaction (and previous models neither)
+model4 <- glm(lineupacc ~ lineuptpta*automatic + lineuptpta*facecomparison + exposure*automatic + exposure*facecomparison + confidence*lineuptpta , family = \"binomial\", data = traindata)
+tidy(print(model4))
+```"
+"1","
+Call:  glm(formula = lineupacc ~ lineuptpta * automatic + lineuptpta * 
+    facecomparison + exposure * automatic + exposure * facecomparison + 
+    confidence * lineuptpta, family = \"binomial\", data = traindata)
+
+Coefficients:
+                 (Intercept)                   lineuptpta2                     automatic  
+                     1.55952                      -0.27160                      -1.62748  
+              facecomparison                 exposureshort                    confidence  
+                     0.35429                      -3.75564                       0.05972  
+       lineuptpta2:automatic    lineuptpta2:facecomparison       automatic:exposureshort  
+                     3.14092                      -1.93510                      -0.90845  
+facecomparison:exposureshort        lineuptpta2:confidence  
+                     1.06161                      -0.05419  
+
+Degrees of Freedom: 113 Total (i.e. Null);  103 Residual
+Null Deviance:	    157.7 
+Residual Deviance: 57.35 	AIC: 79.35
+"

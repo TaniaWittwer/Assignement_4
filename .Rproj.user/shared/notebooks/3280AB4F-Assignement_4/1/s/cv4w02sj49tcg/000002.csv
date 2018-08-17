@@ -1,0 +1,27 @@
+"0","```r
+#build a third model considering interactions
+model3 <- glm(lineupacc ~ lineuptpta*automatic + lineuptpta*facecomparison + exposure*automatic + exposure*facecomparison + confidence*lineuptpta + confidence*exposure + lineuprt*lineuptpta + lineuprt*exposure, family = \"binomial\", data = traindata)
+tidy(print(model3))
+```"
+"1","
+Call:  glm(formula = lineupacc ~ lineuptpta * automatic + lineuptpta * 
+    facecomparison + exposure * automatic + exposure * facecomparison + 
+    confidence * lineuptpta + confidence * exposure + lineuprt * 
+    lineuptpta + lineuprt * exposure, family = \"binomial\", data = traindata)
+
+Coefficients:
+                 (Intercept)                   lineuptpta2                     automatic  
+                   2.179e+00                    -1.840e-01                    -1.832e+00  
+              facecomparison                 exposureshort                    confidence  
+                   2.939e-01                    -3.837e+00                     7.130e-02  
+                    lineuprt         lineuptpta2:automatic    lineuptpta2:facecomparison  
+                  -1.910e-05                     3.191e+00                    -1.834e+00  
+     automatic:exposureshort  facecomparison:exposureshort        lineuptpta2:confidence  
+                  -7.722e-01                     1.098e+00                    -6.544e-02  
+    exposureshort:confidence          lineuptpta2:lineuprt        exposureshort:lineuprt  
+                  -9.483e-03                     3.235e-06                     3.537e-06  
+
+Degrees of Freedom: 113 Total (i.e. Null);  99 Residual
+Null Deviance:	    157.7 
+Residual Deviance: 56.67 	AIC: 86.67
+"

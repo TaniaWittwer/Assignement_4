@@ -1,0 +1,11 @@
+"0","```r
+hist(confidence, main = \"\", xlab = \"Confidence\")
+hist(automatic, main = \"\", xlab = \"Automatic strategy\")
+```"
+"0","```r
+hist(facecomparison, main = \"\", xlab = \"Face comparison strategy\")
+hist(lineuprt, main = \"\", xlab = \"Decision latency\")
+```"
+"0","```r
+mtext(\"Figure 2. Histograms of distribution\", side=3, outer = TRUE, line=-1)
+```"

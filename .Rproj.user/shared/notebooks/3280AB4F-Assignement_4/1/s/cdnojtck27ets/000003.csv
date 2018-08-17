@@ -1,0 +1,7 @@
+"0","```r
+describeBy(traindata, group = traindata$lineupacc)
+```"
+"1","
+ Descriptive statistics by group 
+group: 0
+"

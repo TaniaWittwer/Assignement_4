@@ -1,0 +1,86 @@
+"0","```r
+summary(model4)
+```"
+"1","
+Call:
+glm(formula = lineupacc ~ lineuptpta * automatic + lineuptpta * 
+    facecomparison + exposure * automatic + exposure * facecomparison + 
+    confidence * lineuptpta, family = \"binomial\", data = traindata)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-1.48993  -0.36683   0.03626   0.23112   2.98260  
+
+Coefficients:
+                             Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                   1.55952    1.76695   0.883 0.377449    
+lineuptpta2                  -0.27160    2.09122  -0.130 0.896665    
+automatic                    -1.62748    0.75809  -2.147 0.031809 *  
+facecomparison                0.35429    0.49505   0.716 0.474198    
+exposureshort                -3.75564    2.11588  -1.775 0.075902 .  
+confidence                    0.05972    0.03028   1.972 0.048598 *  
+lineuptpta2:automatic         3.14092    0.83477   3.763 0.000168 ***
+lineuptpta2:facecomparison   -1.93510    0.62013  -3.120 0.001806 ** 
+automatic:exposureshort      -0.90845    0.69585  -1.306 0.191718    
+facecomparison:exposureshort  1.06161    0.62890   1.688 0.091404 .  
+lineuptpta2:confidence       -0.05419    0.03477  -1.558 0.119130    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 157.722  on 113  degrees of freedom
+Residual deviance:  57.349  on 103  degrees of freedom
+AIC: 79.349
+
+Number of Fisher Scoring iterations: 7
+"
+"0","```r
+NagelkerkeR2(model4)
+```"
+"1","$N
+[1] 114
+
+$R2
+[1] 0.7812695
+"
+"0","```r
+#test the classification success of the model
+testmodel4 <- predict(model1, traindata, type = \"response\")
+table(round(testmodel4 + 0.05), traindata$lineupacc)
+```"
+"1","   
+     0  1
+  0 42 16
+  1 12 44
+"
+"0","```r
+confusionMatrix(as.factor(round(testmodel4 + 0.05)), as.factor(traindata$lineupacc))
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction  0  1
+         0 42 16
+         1 12 44
+                                          
+               Accuracy : 0.7544          
+                 95% CI : (0.6649, 0.8302)
+    No Information Rate : 0.5263          
+    P-Value [Acc > NIR] : 4.617e-07       
+                                          
+                  Kappa : 0.5092          
+ Mcnemar's Test P-Value : 0.5708          
+                                          
+            Sensitivity : 0.7778          
+            Specificity : 0.7333          
+         Pos Pred Value : 0.7241          
+         Neg Pred Value : 0.7857          
+             Prevalence : 0.4737          
+         Detection Rate : 0.3684          
+   Detection Prevalence : 0.5088          
+      Balanced Accuracy : 0.7556          
+                                          
+       'Positive' Class : 0               
+                                          
+"

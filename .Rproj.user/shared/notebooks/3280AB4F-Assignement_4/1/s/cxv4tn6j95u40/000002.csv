@@ -1,0 +1,20 @@
+"0","```r
+#then, we build a second model with every other variable but without any correlation
+model2 <- glm(lineupacc ~ lineuptpta + exposure + confidence + lineuprt + automatic + facecomparison, family = \"binomial\", data = traindata)
+tidy(print(model2))
+```"
+"1","
+Call:  glm(formula = lineupacc ~ lineuptpta + exposure + confidence + 
+    lineuprt + automatic + facecomparison, family = \"binomial\", 
+    data = traindata)
+
+Coefficients:
+   (Intercept)     lineuptpta2   exposureshort      confidence        lineuprt       automatic  
+     3.180e+00      -1.714e+00      -2.747e+00       4.345e-03      -8.037e-06      -5.046e-02  
+facecomparison  
+    -2.339e-01  
+
+Degrees of Freedom: 113 Total (i.e. Null);  107 Residual
+Null Deviance:	    157.7 
+Residual Deviance: 112.9 	AIC: 126.9
+"
