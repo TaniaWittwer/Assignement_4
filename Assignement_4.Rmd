@@ -10,30 +10,18 @@ library(pacman)
 p_load(tidyverse, psych, magrittr, readr, DHARMa, broom, stats, caret, vcd, fmsb, lmtest)
 ```
 
-QUESTION 1. 
+QUESTIONS 1 & 2
 Load the training and test data files, cleaning them up as needed, in an R script.
-```{r}
-#load the .csv file (converted from the excel file)
-full_data.dat <- read_csv2("Merged_15032016.csv")
-
-#explore the structure of the file
-str(full_data.dat)
-
-#see join R script as specify on the instruction (Open the file named "question_1.R" here -->)
-```
-
-QUESTION 2.
 Select the variables you need, and store them in appropriate dataframes
-```{r}
-#From the file created thanks to the R script, 
-#test modif
-```
 
-g
+--> see join R script as specify on the instruction (Open the file named "question_1.R")
+Created tidy datafiles are names final_testdata.dat and final_traindata.dat
+
 QUESTION 3. 
 Explore the data with whatever summary statistics/graphs you think necessary. Interpret your findings. What do you expect to find in the modelling phase on the basis of what you see thus far?
 ```{r}
 #load train and test datasets, use only the train dataset to interpret the following questions
+#question 3,4 & 5 have been done with these datasets since questions 1&2 were answered after
 load("eye_FR_traindata-1")
 load("eye_FR_testdata-1")
 ```
@@ -124,8 +112,7 @@ ggplot(traindata, aes(lineupacc, confidence))+
   labs(title = "Figure 10. Boxplot on distribution of confidence usage according to identification accuracy regarding to exposure duration to the event", x = "Accuracy", y = "Confidence")
 ```
 
-Thus, we expect found more confidence after an accurate decision than an inaccurate one (Figure 3), and an interaction between confidence and decision time in the way that the more the participant is confident in his/her decision, the more the decision is quick, independantly of the accuracy of the decision, except when the participant is truly not confident: they take more time for inacurate decision than for accurate ones (Figure 4). Then, even if confidence and exposure duration are quite correlated, the difference seems to be concentrated in target-absent lineup: participant are more likely to be accurate than inaccurate when they report a high confidence in target absent lineup (figure 5). 
-Then, about the strategies, we should find a effect of the presence/absence of the target in the usage of face comparison strategy, since it looks like participant who report using face comparison strategy (namely a higher score on the scale) are more lakely to be accurate than inaccurate in target-absent lineups but inaccurate than accurate in target-present lineups (Figure 6). For the automatic strategy, we found no correlation with accuracy, however if we add an interaction with presence and absence of the target, we observe a reverse pattern: participant who report using an automatic strategy are more likely to be inaccurate than accurate when the target in absent of the lineup, but more accurate than accurate when the target is present in the lineup. 
+Thus, we expect found more confidence after an accurate decision than an inaccurate one (Figure 3), and an interaction between confidence and decision time in the way that the more the participant is confident in his/her decision, the more the decision is quick, independantly of the accuracy of the decision, except when the participant is truly not confident: they take more time for inacurate decision than for accurate ones (Figure 4). Then, even if confidence and exposure duration are quite correlated, the difference seems to be concentrated in target-absent lineup: participant are more likely to be accurate than inaccurate when they report a high confidence in target absent lineup (figure 5). Then, about the strategies, we should find a effect of the presence/absence of the target in the usage of face comparison strategy, since it looks like participant who report using face comparison strategy (namely a higher score on the scale) are more lakely to be accurate than inaccurate in target-absent lineups but inaccurate than accurate in target-present lineups (Figure 6). For the automatic strategy, we found no correlation with accuracy, however if we add an interaction with presence and absence of the target, we observe a reverse pattern: participant who report using an automatic strategy are more likely to be inaccurate than accurate when the target in absent of the lineup, but more accurate than accurate when the target is present in the lineup. 
 Then, it seems to have less face comparison strategy overall after a short than a long exposure duration (Figure 8), but more accurate decision when the participant report an automatic strategy usage after a long exposure duration than after a short exposure duration (Figure 9). Finally, confidence is higher after a long than a short exposure duration, regardless to accuracy.
 
 We should then consider adding interaction with design variables (presence/absence of the target in the lineup and exposure duration) in the regression model. 
@@ -133,16 +120,10 @@ We should then consider adding interaction with design variables (presence/absen
 
 QUESTION 4.
 Build a logistic regression model that uses some or all of the variables above. You should use the logic of training and test sets, building the model on the training set, and then testing it on the test set.
-
-a. Note that the lineuptpta, and videocondition variables are aspects of the design, and should be entered before the other variables, which are predictors.
-
-c. Interpret the results from your model in terms of the implications for understanding the determinants of witness decisions in lineups.
-
 ```{r}
 #Build a first model, exploring only the design variables (target presence/absence and exposure duration)
 traindata$lineuptpta <- as.factor(traindata$lineuptpta)
 model1 <- glm(lineupacc ~ lineuptpta + exposure, family = "binomial", data = traindata)
-tidy(print(model1))
 summary(model1)
 NagelkerkeR2(model1)
 
@@ -151,12 +132,10 @@ testmodel1 <- predict(model1, traindata, type = "response")
 table(round(testmodel1 + 0.05), traindata$lineupacc)
 confusionMatrix(as.factor(round(testmodel1 + 0.05)), as.factor(traindata$lineupacc))
 ```
-With this very first model, we observe a significant effect of the presence/absence of the target in the lineup on accuracy, as well as the exposure duration. In fact, ... #interpret more. 
-
+With this very first model, we observe a significant effect of the presence/absence of the target in the lineup on accuracy, as well as the exposure duration. In fact, this simple model actually has a 75% classification accuracy (78% sensitivity and 73% specificity). However, since lineuptpta and exposure are only out design variables, we then comput a new model, with additionnal variable: our base model. The effect size, measured by the Nagelkerke R2 = .42.
 ```{r}
-#then, we build a second model with every other variable but without any correlation
+#base model, with main effect only
 model2 <- glm(lineupacc ~ lineuptpta + exposure + confidence + lineuprt + automatic + facecomparison, family = "binomial", data = traindata)
-tidy(print(model2))
 summary(model2)
 NagelkerkeR2(model2)
 
@@ -165,13 +144,12 @@ testmodel2 <- predict(model2, traindata, type = "response")
 table(round(testmodel2 + 0.05), traindata$lineupacc)
 confusionMatrix(as.factor(round(testmodel2 + 0.05)), as.factor(traindata$lineupacc))
 ```
-In this model, we observe no additional significant direct effects of any other variable on the accuracy than the one already observec (of lineuptpta and exposure). However, the model is... #interpret. 
-According to the observations made in the previous questions when we explored the data, we should consider adding interaction between our variables and design variables
+In this model, we observe no additional significant direct effects of any other variable on the accuracy than the one already observed (of lineuptpta and exposure). However, the model is less accurate, with 71% of accurate classification (62% sensitivity and 78% specificity). Nagelkerke R2 is then = 43. Thus this, model fits less our data and is less accurate, the consistency is lower. 
 
+According to the our very first observations, we should consider adding interaction between our variables and design variables, since we observes some interesting correlations: 
 ```{r}
 #build a third model considering interactions
 model3 <- glm(lineupacc ~ lineuptpta*automatic + lineuptpta*facecomparison + exposure*automatic + exposure*facecomparison + confidence*lineuptpta + confidence*exposure + lineuprt*lineuptpta + lineuprt*exposure, family = "binomial", data = traindata)
-tidy(print(model3))
 summary(model3)
 NagelkerkeR2(model3)
 
@@ -180,12 +158,12 @@ testmodel3 <- predict(model3, traindata, type = "response")
 table(round(testmodel3 + 0.05), traindata$lineupacc)
 confusionMatrix(as.factor(round(testmodel3 + 0.05)), as.factor(traindata$lineupacc))
 ```
-From this third model, we observe that we have an significant direct effect of automatic comparison, which was not present in our first model, as well as a significant effect of the interaction between this automatic strategy and the presence/absence of the target. The face comparison strategy is, however, only significant in interaction with the presence/absence of the target. Then, confidence also show a direct effect in this model, as well as in interaction with presence/absence of the target. Exposure duration is only significant in interaction with face comparison strategy. 
-This model is #better? than the other one.
+From this third model, we observe that we have an significant direct effect of automatic comparison, which was not present in our first model, as well as a significant effect of the interaction between this automatic strategy and the presence/absence of the target. The face comparison strategy is, however, only significant in interaction with the presence/absence of the target. Then, confidence also show a direct effect in this model, as well as in interaction with presence/absence of the target. Exposure duration is only significant in interaction with face comparison strategy. The model has a better consistency than the previous one, as well as the first one with 89% of classification accuracy (87% sensitivity and 90% specificity) with a better effect size as well (Nagelkerke R2 = .78). 
+
+However, we consider a very last model, removing decision latency (lineuprt) which seems have no effect in out models, to see if the model is improved, as well as some interactions like confidence*exposure since our exploratory analysis show no interesting relationship (and previous models neither):
 ```{r}
-#Since, we consider a very last model, removing decision latency (lineuprt) which seems have no effect in out models, to see if the model is improved, as well as some interactions like confidence*exposure since our exploratory analysis show no interaction (and previous models neither)
+#last model testing
 model4 <- glm(lineupacc ~ lineuptpta*automatic + lineuptpta*facecomparison + exposure*automatic + exposure*facecomparison + confidence*lineuptpta , family = "binomial", data = traindata)
-tidy(print(model4))
 summary(model4)
 NagelkerkeR2(model4)
 
@@ -194,18 +172,28 @@ testmodel4 <- predict(model1, traindata, type = "response")
 table(round(testmodel4 + 0.05), traindata$lineupacc)
 confusionMatrix(as.factor(round(testmodel4 + 0.05)), as.factor(traindata$lineupacc))
 ```
-In this last model, we observe the same significant direct and interaction effect, expect that the interaction between confidence and presence/absence of the target is not significant anymore. However, this model improve classification #or not? Explore which one is the best model in terms of explaned variance
+In this last model, we observe the same significant direct and interaction effect, expect that the interaction between confidence and presence/absence of the target is not significant anymore. Moreover, classification accuracy then drop to 75% (78% sensitivity and 73% specificity) with an identical Nagelkerke R2 (= .78). 
 
-
-#conclusion: what are the implication to understand decision strategies? 
-Model 3 has the best classification rate, however... blablabla interpretation
-
+Finally, we can conclude with this analysis, that the more robust model is the third one (model3), which present interesting main effect and interactions with a hight rate (89%) of accuract classification.
+We now can test its model on the test dataset, to explore in which extent it can be applicable/replicable:
 ```{r}
-#compute some plots to represent each model
-plot(simulateResiduals(model1))
-plot(simulateResiduals(model2))
+#build the best model (model3) on the test dataset
+model5 <- glm(lineupacc ~ lineuptpta*automatic + lineuptpta*facecomparison + exposure*automatic + exposure*facecomparison + confidence*lineuptpta + confidence*exposure + lineuprt*lineuptpta + lineuprt*exposure, family = "binomial", data = testdata)
+summary(model5)
+NagelkerkeR2(model5)
+
+#test the classification success of the model
+testmodel5 <- predict(model5, testdata, type = "response")
+table(round(testmodel5 + 0.05), testdata$lineupacc)
+confusionMatrix(as.factor(round(testmodel5 + 0.05)), as.factor(testdata$lineupacc))
+```
+Once apply to the test model, the results are quite similar, even some difference appears in the signficativity of the factors. However, the classification accuracy still being very string (90%, with 87% sensitivity and 93% specificity). 
+
+We can also compute mode statistics in order to compare our models, as:
+```{r}
+#compute some plots to represent the best train model and the test model
 plot(simulateResiduals(model3))
-plot(simulateResiduals(model4))
+plot(simulateResiduals(model5))
 
 #summary of R2, even if their usage is discutable - they still be comparable
 r2_model1 <- NagelkerkeR2(model1)
@@ -217,110 +205,50 @@ matrix(c(r2_model1,r2_model2,r2_model3,r2_model4), nrow = 4, ncol = 2, byrow = T
 colnames(matrix1) <- c("N", "R2")
 rownames(matrix1) <- c("Model 1", "Model 2", "Model 3", "Model 4")
 matrix1
-
-#compare models using anova and compute p-values
-tidy(anova(model2,model1))
-p_anova1 <- 1-pchisq(model2$deviance,
-         model2$df.residual)
-lrtest(model1, model2) #likehood ratio test to test significant difference
-
-tidy(anova(model3,model2))
-p_anova2 <- 1-pchisq(model3$deviance,
-         model3$df.residual)
-lrtest(model2, model3)
-
-tidy(anova(model4,model3))
-p_anova3 <- 1-pchisq(model4$deviance,
-         model4$df.residual)
-lrtest(model3, model4)
-
-#generate a table to summarize the p-values, make the comparison easier
-matrix(c(p_anova1, p_anova2, p_anova3)) -> matrix2
-colnames(matrix2) <- c("p-value")
-rownames(matrix2) <- c("Anova 1", "Anova 2", "Anova 3")
-matrix2
-
 ```
-From the residuals plots and the anova tests, we can conclude that the best model is #blablabla since it explains #blablabla
-
 
 QUESTION 5.
-For a logistic regression model relating confidence and lineuptpta to lineup accuracy, compute the following
-i. the probability that someone who is > 80% confident is accurate
-ii. the odds that this person is correct
-iii. the partial odds ratio in the relation between lineuptpta and accuracy of decision
-b. Assess the accuracy of the model using a confusion matrix. Check the amount of difference in the prediction errors (sensitivity and specificity – hint, use the confusionMatrix function from package caret).
+For a logistic regression model relating confidenceresp (= confidence) and lineuptpta to lineup accuracy, compute the following (i) the probability that someone who is > 80% confident is accurate; (ii) the odds that this person is correct; (iii) the partial odds ratio in the relation between lineuptpta and accuracy of decision. Assess the accuracy of the model using a confusion matrix. Check the amount of difference in the prediction errors (sensitivity and specificity – hint, use the confusionMatrix function from package caret).
 
 ```{r}
-traindata2 <- as.numeric(traindata$confidence)
+#build a new model with lineuptpta and confidence over accuracy
+model6 <- glm(lineupacc ~ lineuptpta + confidence, family = "binomial", data = traindata)
+summary(model6) #We can observe a significant effect of the two variables on accuracy
+NagelkerkeR2(model6)
 
-#select only participant with a higher confidence that 80% and ssign it to a new dataset
+#select only participants with confidence > or = to 80%, assign it to a new dataset
 traindata$confidence <- as.numeric(traindata$confidence)
-traindata$lineuptpta <- as.numeric(traindata$lineuptpta)
 traindata2 <- 
   traindata %>% 
   filter(confidence >= 80)
 
-#build a new model with this new dataset
-model5 <- glm(lineupacc ~ lineuptpta*confidence, family = "binomial", data = traindata2)
+#construct a new model containing this new filtered dataset
+model7 <- glm(lineupacc ~ lineuptpta + confidence, family = "binomial", data = traindata2)
+print(model7)
 
-tidy(print(model5))
-summary(model5)
-NagelkerkeR2(model5)
-
-#probability
-mean(predict(model5, type = "response"))
+#get the probability
+mean(predict(model7, data.frame(lineupacc = 1), type = "response"))
 
 #get odds ratio
-x <- predict(model5, 
-             data.frame(confidence = 80), type = "response")
-odds <- x/(1-x)  # to get the answer in odds
+x <- predict(model7, data.frame(lineupacc = 1), type = "response")
+odds <- mean(x/(1-x))
 print(odds)
 
-```
-#conclude interpreting the intercept value in the interaction (but non significant)... 
-
-
-#odds
-```{r}
-model5 <- glm(lineupacc ~ confidence, family = "binomial", data = traindata)
-print(model5)
-
-#get logit, ne fonctionne pas avec >
-predict(model5, 
-        data.frame(confidence = 80))
-
-#get probability
-predict(chdmodel1, 
-        data.frame(tobacco = 30), type = "response")
-
-#odds ratio partiel (?)
-exp(odds)
-
-
-predict(chdmodel1, 
-        data.frame(tobacco = 30))# logit
-
-predict(chdmodel1, 
-        data.frame(tobacco = 30), type = "response") # probability
-x <- predict(chdmodel1, 
-             data.frame(tobacco = 30), type="response")
-odds <- x/(1-x)  # to get the answer in odds
-print(odds)
-```
-
-b. Assess the accuracy of the model using a confusion matrix. Check the amount of difference in the prediction errors (sensitivity and specificity – hint, use the confusionMatrix function from package caret).
-```{r}
-#create a confusion matrix
-for_matrix <- predict(model5, traindata, type = "response")
-table(round(for_matrix),traindata$lineupacc, 0)
-confusionMatrix(as.factor(as.numeric(for_matrix >= .5)), 
+#for the confusionMatrix
+for_matrix <- predict(model7, traindata, type = "response")
+table(round(for_matrix, 0),traindata$lineupacc)
+confusionMatrix(factor(as.numeric(for_matrix >= .5)), 
                 as.factor(traindata$lineupacc))
 ```
-
+From these analysis, participants who has a confidence equal or highter to 80% are 90% more likely to have made an accurate than inaccurate identification. However, the model containing only confidence has 54% of accuracy classification (9% sensitivity, 95% specificity). The sensisivity is very low, which could be explain by the size of the subdataset
 
 QUESTION 6.
 Show algebraically that the logit function used for logistic regression can be written in two alternate ways, representing probability, and odds, respectively - that is, that A, B, and C below are equivalent. Use the equation editor in Word to write your answer, or do it by hand, scan it, and upload it.
 
-http://www.codecogs.com
+$$
+1 - \hat{p}_{1} = \frac{1}{e(\beta_{1}X_{1}+\beta_{2})}
+$$
+GiTHub bonus:
+Link to my repository --> https://github.com/TaniaWittwer/Assignement_4.git
+
 
